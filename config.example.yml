@@ -1,0 +1,14 @@
+users:
+  - username: username
+    password: password
+
+servers:
+  - name: Mock Server 1
+    folderPath: ./server-mock
+    serverIP: server1.joinme.test
+    serverPort: 19132
+
+  - name: Mock Server 2
+    folderPath: ./server-mock
+    serverIP: server2.joinme.test
+    serverPort: 19232
