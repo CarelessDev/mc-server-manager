@@ -22,6 +22,7 @@ export class MinecraftServer {
   _start() {
     this.process = spawn(this.folderPath + "/bedrock_server", {
       stdio: ["pipe", "pipe", "pipe"],
+      cwd: this.folderPath,
     });
 
     this.process.stdin.setDefaultEncoding("utf-8");
