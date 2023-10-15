@@ -11,6 +11,15 @@ export class MinecraftServer {
   constructor(readonly folderPath: string) {}
 
   start() {
+    try {
+      this._start();
+    } catch (err) {
+      console.error(err);
+      this.status = ServerStatus.ERROR;
+    }
+  }
+
+  _start() {
     this.process = spawn(this.folderPath + "/bedrock_server", {
       stdio: ["pipe", "pipe", "pipe"],
     });
@@ -28,6 +37,8 @@ export class MinecraftServer {
     this.process.on("exit", (code) => {
       if (code !== 0) {
         this.status = ServerStatus.ERROR;
+      } else {
+        this.afterStop();
       }
     });
 
@@ -38,7 +49,18 @@ export class MinecraftServer {
     this.process?.stdin.write(command + "\n");
   }
 
-  async stop() {
+  stop() {
+    this.status = ServerStatus.STOPPING;
     this.process?.stdin.write("stop\n");
+  }
+
+  async afterStop() {
+    console.log(`Saving ${this.folderPath} to git...`);
+    await new Promise((resolve) => {
+      setTimeout(resolve, 5000);
+    });
+    console.log("Done!");
+
+    this.status = ServerStatus.STOPPED;
   }
 }
