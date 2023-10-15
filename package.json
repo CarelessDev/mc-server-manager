@@ -2,6 +2,7 @@
   "name": "mc-server-manager",
   "version": "0.0.0",
   "private": true,
+  "packageManager": "pnpm@8.9.1",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
