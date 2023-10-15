@@ -14,7 +14,10 @@ export const GET = (async ({ params }) => {
     throw error(400, "Server is not running");
   }
 
-  return json({ stdout: server.process.stdout, stderr: server.process.stderr });
+  const stdout = server.process.stdout.slice(-10000);
+  const stderr = server.process.stderr.slice(-10000);
+
+  return json({ stdout, stderr });
 }) satisfies RequestHandler;
 
 export const POST = (async ({ params, request }) => {

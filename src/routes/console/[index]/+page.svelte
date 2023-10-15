@@ -46,7 +46,7 @@
     id="console-output"
     class="flex-grow rounded-lg bg-gray-900 p-2 font-mono text-white"
     readonly
-    rows={consoleOutput.split("\n").length}
+    rows={Math.min(80, consoleOutput.split("\n").length)}
   >
     {consoleOutput}
   </textarea>
@@ -57,7 +57,7 @@
       id="console-error"
       class="flex-grow rounded-lg bg-red-900 p-2 font-mono text-white"
       readonly
-      rows={consoleError.split("\n").length}
+      rows={Math.min(20, consoleError.split("\n").length)}
     >
       {consoleError}
     </textarea>

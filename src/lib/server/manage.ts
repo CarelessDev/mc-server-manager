@@ -1,6 +1,12 @@
 import { ServerStatus } from "$lib/types";
 import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
 
+import { exec as execCb } from "node:child_process";
+
+import { promisify } from "node:util";
+
+const exec = promisify(execCb);
+
 export class MinecraftServer {
   stdout = "";
   stderr = "";
@@ -57,9 +63,18 @@ export class MinecraftServer {
 
   async afterStop() {
     console.log(`Saving ${this.folderPath} to git...`);
-    await new Promise((resolve) => {
-      setTimeout(resolve, 5000);
-    });
+
+    const date = new Date();
+    const year = date.getFullYear().toString().slice(-2);
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}`;
+    console.log(formattedDate);
+
+    await exec(
+      `cd ${this.folderPath} && git add . && git commit -m "Auto Backup ${formattedDate}" && git push`,
+    );
+
     console.log("Done!");
 
     this.status = ServerStatus.STOPPED;
